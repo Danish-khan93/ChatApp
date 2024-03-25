@@ -7,6 +7,8 @@ import HeaderForSideBar from "./chat/HeaderForSideBar";
 import UserSearch from "./chat/UserSearch";
 import ChatingInput from "./chat/ChatingInput";
 import UsersChats from "./chat/UsersChats";
+import MessagingBox from "./chat/MessagingBox";
+import Message from "./chat/Message"
 export {
   InputField,
   PicturUpload,
@@ -17,4 +19,6 @@ export {
   UserSearch,
   ChatingInput,
   UsersChats,
+  MessagingBox,
+  Message
 };
