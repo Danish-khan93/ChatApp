@@ -29,7 +29,7 @@ export type SIGNUPFORM = {
 
 export type INITIALSTATE = {
 isLoggedIn : boolean;
-userId : string,
+userId : string | "" | null,
 
 
 }
