@@ -1,5 +1,6 @@
-import { Box, Typography,IconButton } from "@mui/material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Box, Typography } from "@mui/material";
+import {ChatMenu} from "../index"
+
 import { FC } from "react";
 const HeaderForChat: FC = () => {
   return (
@@ -17,9 +18,8 @@ const HeaderForChat: FC = () => {
         </Box>
       </Box>
       <Box>
-        <IconButton >
-          <MoreVertIcon className="text-[#fff]"/>
-        </IconButton>
+        <ChatMenu/>
+      
       </Box>
     </Box>
   );

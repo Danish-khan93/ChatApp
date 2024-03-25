@@ -1,7 +1,14 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography,Button } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { FC } from "react";
 const HeaderForSideBar: FC = () => {
+
+const handleLogout =() =>{
+  console.log("logout");
+  
+}
+
+
   return (
     <Box className="flex justify-between items-center w-full">
       <Box  className="flex justify-around gap-4">
@@ -13,7 +20,8 @@ const HeaderForSideBar: FC = () => {
           <Typography>id</Typography>
         </Box>
       </Box>
-      <Box>
+      <Box className="flex items-center">
+        <Button className="bg-[#1b1b1b] w-full hover:bg-[#1b1b1b] text-[12px] text-[#fff] px-[10px]" onClick={handleLogout}>logOut</Button>
         <Typography>
           <NotificationsNoneIcon />
         </Typography>

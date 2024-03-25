@@ -61,6 +61,7 @@ const Signup: FC = () => {
               email: data?.email,
               photoURL: downloadURL,
             });
+            await setDoc(doc(db,"userChat",response?.user?.uid),{})
             dispatch(login(response?.user?.uid));
             if (userLoggein !== "") {
               navigate("/home");

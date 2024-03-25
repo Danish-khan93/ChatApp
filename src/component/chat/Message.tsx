@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-
-const Message = () => {
+import { FC } from "react";
+const Message : FC = () => {
   return (
     <Box className="flex items-center gap-5 p-[20px]">
       <Box>
