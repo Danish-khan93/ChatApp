@@ -1,23 +1,33 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNUPFORM } from "../types/authTypes";
 import { InputField } from "../component";
 import { displayNameRules } from "../rules/authRules";
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import { login } from "../redux/feature/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login: FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const { control, handleSubmit } = useForm<SIGNUPFORM>({
     defaultValues: {
       email: "",
       password: "",
     },
   });
-
+  useEffect(()=>{
+  if(sessionStorage.getItem("token")){
+    navigate("/home");
+  }
+  },[])
   const onSubmit = async (data: SIGNUPFORM) => {
     try {
       const response = await signInWithEmailAndPassword(
@@ -25,6 +35,12 @@ const Login: FC = () => {
         data?.email,
         data?.password
       );
+      // @ts-ignore
+      sessionStorage.setItem("token", response?._tokenResponse?.refreshToken);
+      onAuthStateChanged(auth, (user) => {
+        dispatch(login(user));
+      });
+      navigate("/home");
       console.log(response?.user?.uid);
     } catch (error: any) {
       if (error.code === "auth/invalid-credential")

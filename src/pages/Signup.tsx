@@ -1,9 +1,9 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNUPFORM } from "../types/authTypes";
 import { InputField, PicturUpload } from "../component";
 import { ToastContainer, toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import {
   displayNameRules,
@@ -13,12 +13,15 @@ import {
 } from "../rules/authRules";
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, storage, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch, RootState } from "../redux/store";
+import { AppDispatch } from "../redux/store";
 import { login } from "../redux/feature/authSlice";
 
 const Signup: FC = () => {
@@ -27,7 +30,7 @@ const Signup: FC = () => {
   // navigate
   const navigate = useNavigate();
   // redux state
-  const userLoggein = useSelector((state: RootState) => state?.auth?.userId);
+
   const { control, handleSubmit } = useForm<SIGNUPFORM>({
     defaultValues: {
       displayName: "",
@@ -36,6 +39,12 @@ const Signup: FC = () => {
       profileURL: [],
     },
   });
+
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      navigate("/home");
+    }
+  }, []);
 
   const onSubmit = async (data: SIGNUPFORM) => {
     console.log(data);
@@ -47,6 +56,10 @@ const Signup: FC = () => {
         data?.email,
         data?.password
       );
+
+      // session storage
+      // @ts-ignore
+      sessionStorage.setItem("token", response?._tokenResponse?.refreshToken);
 
       // profile pic firebase storage
       const profilePicRef = ref(storage, `${data?.displayName}/${Date.now()}`);
@@ -61,13 +74,12 @@ const Signup: FC = () => {
               email: data?.email,
               photoURL: downloadURL,
             });
-            await setDoc(doc(db,"userChat",response?.user?.uid),{})
-            dispatch(login(response?.user?.uid));
-            if (userLoggein !== "") {
-              navigate("/home");
-            } else {
-              navigate("/");
-            }
+            await setDoc(doc(db, "userChat", response?.user?.uid), {});
+            onAuthStateChanged(auth, (user) => {
+              dispatch(login(user));
+            });
+
+            navigate("/home");
           } catch (error) {
             console.log("File available error at", error);
           }

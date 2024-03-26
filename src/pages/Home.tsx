@@ -1,18 +1,22 @@
+import { useEffect } from "react";
 import { SideBar, ChatBox } from "../component";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 const Home = () => {
-  const navigate = useNavigate();
-  const userId = useSelector((state: RootState) => state?.auth?.userId);
-
+  const navigate = useNavigate()
+  const isLoggedin = useSelector((state: RootState) => state?.auth?.isLoggedIn);
   useEffect(() => {
-    if (userId === null) {
-      navigate("/");
+    if (sessionStorage.getItem("token")== null && isLoggedin== false) {
+      navigate("/login") ;
+    } else {
+      navigate("/home") ;
+      
     }
   }, []);
+console.log(sessionStorage.getItem("token"));
+
   return (
     <Box className="flex ">
       <Box className="w-[30%]">

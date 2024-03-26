@@ -13,6 +13,7 @@ const navigate = useNavigate()
   const handleLogout = () => {
     signOut(auth);
     dispatch(logOut());
+    sessionStorage.clear()
     navigate("/")
   };
   return (

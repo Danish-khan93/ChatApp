@@ -3,7 +3,7 @@ import { INITIALSTATE } from "../../types/authTypes";
 
 const initialState: INITIALSTATE = {
   isLoggedIn: false,
-  userId: null,
+  user: {},
 };
 
 const authSlice = createSlice({
@@ -11,10 +11,10 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      (state.isLoggedIn = true), (state.userId = action.payload);
+      (state.isLoggedIn = true), (state.user = action.payload);
     },
     logOut: (state) => {
-        (state.isLoggedIn = false), (state.userId = null);
+        (state.isLoggedIn = false), (state.user = {});
         
     },
   },
