@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
@@ -63,9 +64,14 @@ const Signup: FC = () => {
 
       // profile pic firebase storage
       const profilePicRef = ref(storage, `${data?.displayName}/${Date.now()}`);
-      await uploadBytesResumable(profilePicRef, data?.profileURL).then(() => {
+      await uploadBytesResumable(profilePicRef, data?.profileURL[0]).then(() => {
         getDownloadURL(profilePicRef).then(async (downloadURL) => {
           try {
+            // update proflie
+            await updateProfile(response?.user, {
+              displayName: data?.displayName,
+              photoURL: downloadURL,
+            });
             // making user collection in cloud firestore
             // create new user collection
             await setDoc(doc(db, "user", response?.user?.uid), {
@@ -76,6 +82,8 @@ const Signup: FC = () => {
             });
             await setDoc(doc(db, "userChat", response?.user?.uid), {});
             onAuthStateChanged(auth, (user) => {
+             console.log(user);
+             
               dispatch(login(user));
             });
 

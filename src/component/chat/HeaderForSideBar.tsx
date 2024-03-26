@@ -7,7 +7,10 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { logOut } from "../../redux/feature/authSlice";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 const HeaderForSideBar: FC = () => {
+  const currentuser = useSelector((state:RootState)=>state?.auth?.user)
   const dispatch = useDispatch<AppDispatch>();
 const navigate = useNavigate()
   const handleLogout = () => {
@@ -21,13 +24,13 @@ const navigate = useNavigate()
       <Box className="flex justify-around gap-4">
         <Box>
           <Typography
-            className="rounded-full"
+            className="rounded-full w-[50px] h-[50px]"
             component={"img"}
-            src="https://picsum.photos/50/50"
+            src={currentuser?.photoURL}
           ></Typography>
         </Box>
         <Box>
-          <Typography className="font-semibold">name</Typography>
+          <Typography className="font-semibold">{currentuser?.displayName}</Typography>
           <Typography>id</Typography>
         </Box>
       </Box>

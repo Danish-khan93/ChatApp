@@ -15,7 +15,7 @@ const Home = () => {
       
     }
   }, []);
-console.log(sessionStorage.getItem("token"));
+
 
   return (
     <Box className="flex ">
