@@ -1,17 +1,21 @@
 import { Box, Typography } from "@mui/material";
 import { FC } from "react";
-const UsersChats :FC = () => {
+type Props ={
+  name:string;
+  image:string;
+}
+const UsersChats :FC<Props> = ({name,image}) => {
   return (
     <Box className="flex gap-7 items-center py-5 border-b border-[#EDEDED] ">
       <Box>
         <Typography
-          className="rounded-full"
+          className="rounded-full w-[50px] h-[50px]"
           component={"img"}
-          src="https://picsum.photos/50/50"
+          src={image}
         ></Typography>
       </Box>
       <Box>
-        <Typography>name</Typography>
+        <Typography>{name}</Typography>
       </Box>
     </Box>
   );
