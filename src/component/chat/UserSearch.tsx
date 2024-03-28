@@ -17,8 +17,12 @@ const UserSearch: FC = () => {
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         setChatUser(doc.data());
-        // console.log(doc.id, " => ", doc.data());
+        console.log(doc.id, " => ", doc.data());
       });
+
+
+
+
     } catch (error) {
       setErr(true);
       console.log("error", error);
@@ -35,6 +39,7 @@ const UserSearch: FC = () => {
         size="small"
         className="w-full"
         placeholder="Search Chats"
+        value={text}
         onChange={(e) => {
           setText(e?.target?.value);
         }}
@@ -59,7 +64,7 @@ const UserSearch: FC = () => {
       />
       <Box>
         {chatUser && (
-          <UsersChats name={chatUser?.displayName} image={chatUser?.photoURL} />
+          <UsersChats name={chatUser?.displayName} image={chatUser?.photoURL} user={chatUser}/>
         )}
       </Box>
       <Box>{err && <Typography>user not found</Typography>}</Box>

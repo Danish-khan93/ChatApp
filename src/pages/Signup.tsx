@@ -64,35 +64,38 @@ const Signup: FC = () => {
 
       // profile pic firebase storage
       const profilePicRef = ref(storage, `${data?.displayName}/${Date.now()}`);
-      await uploadBytesResumable(profilePicRef, data?.profileURL[0]).then(() => {
-        getDownloadURL(profilePicRef).then(async (downloadURL) => {
-          try {
-            // update proflie
-            await updateProfile(response?.user, {
-              displayName: data?.displayName,
-              photoURL: downloadURL,
-            });
-            // making user collection in cloud firestore
-            // create new user collection
-            await setDoc(doc(db, "user", response?.user?.uid), {
-              uid: response?.user?.uid,
-              displayName: data?.displayName,
-              email: data?.email,
-              photoURL: downloadURL,
-            });
-            await setDoc(doc(db, "userChat", response?.user?.uid), {});
-            onAuthStateChanged(auth, (user) => {
-             console.log(user);
-             
-              dispatch(login(user));
-            });
+      // @ts-ignore
+      await uploadBytesResumable(profilePicRef, data?.profileURL[0]).then(
+        () => {
+          getDownloadURL(profilePicRef).then(async (downloadURL) => {
+            try {
+              // update proflie
+              await updateProfile(response?.user, {
+                displayName: data?.displayName,
+                photoURL: downloadURL,
+              });
+              // making user collection in cloud firestore
+              // create new user collection
+              await setDoc(doc(db, "user", response?.user?.uid), {
+                uid: response?.user?.uid,
+                displayName: data?.displayName,
+                email: data?.email,
+                photoURL: downloadURL,
+              });
+              await setDoc(doc(db, "userChat", response?.user?.uid), {});
+              onAuthStateChanged(auth, (user) => {
+                console.log(user);
 
-            navigate("/home");
-          } catch (error) {
-            console.log("File available error at", error);
-          }
-        });
-      });
+                dispatch(login(user));
+              });
+
+              navigate("/home");
+            } catch (error) {
+              console.log("File available error at", error);
+            }
+          });
+        }
+      );
     } catch (error: any) {
       if (error?.code === "auth/email-already-in-use")
         toast?.error("Email is Already in use");
