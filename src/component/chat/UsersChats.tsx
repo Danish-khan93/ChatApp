@@ -7,14 +7,13 @@ import { RootState } from "../../redux/store";
 const UsersChats: FC = () => {
   const currentUser = useSelector((state: RootState) => state?.auth?.user);
   const [chat, setChat] = useState([]);
-console.log(chat);
+  console.log(chat);
 
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(doc(db, "userChat", currentUser?.uid), (doc) => {
         // @ts-ignore
-        console.log(doc.data());
-        
+
         setChat(doc.data());
       });
 
@@ -28,9 +27,10 @@ console.log(chat);
 
   return (
     <>
-      {Object.entries(chat).map((value:any) => {
+      {Object.entries(chat).map((value: any) => {
         return (
-          <Box key={value[0]}
+          <Box
+            key={value[0]}
             className="flex gap-7 items-center py-5 border-b border-[#EDEDED] "
             // onClick={handleSelect}
           >
