@@ -21,6 +21,7 @@ const UserSearch: FC = () => {
   const [text, setText] = useState("");
   const [user, setUser] = useState<any>({});
   const [err, setErr] = useState<boolean>(false);
+  const currentUser = useSelector((state: RootState) => state?.auth?.user);
 
   const changeHandler = async () => {
     const q = query(collection(db, "user"), where("displayName", "==", text));
@@ -37,7 +38,6 @@ const UserSearch: FC = () => {
     }
   };
 
-  const currentUser = useSelector((state: RootState) => state?.auth?.user);
   const handleSelect = async () => {
     // check whether the chat group is exist if not create
     const combineId =

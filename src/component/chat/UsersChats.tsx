@@ -13,9 +13,10 @@ console.log(chat);
     const getChats = () => {
       const unsub = onSnapshot(doc(db, "userChat", currentUser?.uid), (doc) => {
         // @ts-ignore
-        console.log(doc.data());
-        
+        console.log(Object.entries(doc.data())) ;
+        // @ts-ignore
         setChat(doc.data());
+        
       });
 
       return () => {
@@ -29,6 +30,8 @@ console.log(chat);
   return (
     <>
       {Object.entries(chat).map((value:any) => {
+        console.log(value);
+        
         return (
           <Box key={value[0]}
             className="flex gap-7 items-center py-5 border-b border-[#EDEDED] "
@@ -38,12 +41,13 @@ console.log(chat);
               <Typography
                 className="rounded-full w-[50px] h-[50px]"
                 component={"img"}
-                src={value[1]?.userInfo?.photoURL}
+                src={value[1]?.userInfo?.photoURl}
               ></Typography>
+            
             </Box>
             <Box>
               <Typography>{value[1]?.userInfo?.displayName}</Typography>
-              <Typography>{value[1]?.userInfo?.lastMessage?.text}</Typography>
+              {/* <Typography>{value[1]?.userInfo?.lastMessage?.text}</Typography> */}
             </Box>
           </Box>
         );
