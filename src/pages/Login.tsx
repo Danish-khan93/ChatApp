@@ -38,6 +38,8 @@ const Login: FC = () => {
       // @ts-ignore
       sessionStorage.setItem("token", response?._tokenResponse?.refreshToken);
       onAuthStateChanged(auth, (user) => {
+        console.log(user);
+        
         dispatch(login(user));
       });
       navigate("/home");
