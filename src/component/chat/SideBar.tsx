@@ -3,7 +3,7 @@ import { FC } from "react";
 import { HeaderForSideBar,UserSearch ,UsersChats} from "../index";
 const SideBar: FC = () => {
   return (
-    <Box className="px-[20px]">
+    <Box className="px-[20px] flex flex-col justify-between" >
       <Box className="py-[20px]">
         <HeaderForSideBar />
       </Box>
@@ -13,7 +13,7 @@ const SideBar: FC = () => {
       <Box>
         <UserSearch />
       </Box>
-      <Box>
+      <Box className="overflow-y-auto">
         <UsersChats/>
       </Box>
     </Box>

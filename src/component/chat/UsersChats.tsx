@@ -36,7 +36,7 @@ const UsersChats: FC = () => {
   };
 
   return (
-    <>
+    <Box style={{ height: "calc(100vh - 311px)", overflowY: "auto" }}>
       {Object.entries(chat).map((value: any) => {
         return (
           <button
@@ -59,7 +59,7 @@ const UsersChats: FC = () => {
           </button>
         );
       })}
-    </>
+    </Box>
   );
 };
 
