@@ -1,7 +1,11 @@
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Menu, MenuItem, IconButton } from "@mui/material";
-import { useState } from "react";
-export default function ChatMenu() {
+import { FC, ReactNode, useState } from "react";
+type Prop = {
+  children: ReactNode;
+  menuItem: { name: string; type: string }[];
+  fun : any
+};
+const ChatMenu: FC<Prop> = ({ children, menuItem,fun }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,7 +24,8 @@ export default function ChatMenu() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <MoreVertIcon className="text-[#fff]" />
+        {children}
+        {/* <MoreVertIcon className="text-[#fff]" /> */}
       </IconButton>
       <Menu
         id="basic-menu"
@@ -31,10 +36,18 @@ export default function ChatMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        {menuItem.map(
+          (value: { name: string; type: string }, index: number) => {
+            return (
+              <MenuItem onClick={handleClose} key={index}>
+                <input type={value.type}  className="hidden" id="file"  onChange={(e)=>( e?.target?.files)} />
+                <label htmlFor="file">{value.name}</label>
+              </MenuItem>
+            );
+          }
+        )}
       </Menu>
     </div>
   );
-}
+};
+export default ChatMenu;
