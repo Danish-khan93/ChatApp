@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
-import { ChatMenu } from "../index";
+// import { ChatMenu } from "../index";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { FC } from "react";
 const HeaderForChat: FC = () => {
   const chatUser = useSelector((state: RootState) => state?.chat.user.user);
@@ -25,7 +25,7 @@ console.log("chatUSer",chatUser);
         </Box>
       </Box>
       <Box>
-        <ChatMenu children={<MoreVertIcon/>} menuItem={["profile","clear Chat"]}/>
+        {/* <ChatMenu children={<MoreVertIcon/>} menuItem={["profile","clear Chat"]}/> */}
       </Box>
     </Box>
   );

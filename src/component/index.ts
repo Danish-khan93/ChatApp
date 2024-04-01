@@ -9,7 +9,7 @@ import ChatingInput from "./chat/ChatingInput";
 import UsersChats from "./chat/UsersChats";
 import MessagingBox from "./chat/MessagingBox";
 import Message from "./chat/Message"
-import ChatMenu from "./chat/ChatMenu";
+// import ChatMenu from "./chat/ChatMenu";
 export {
   InputField,
   PicturUpload,
@@ -22,5 +22,5 @@ export {
   UsersChats,
   MessagingBox,
   Message,
-  ChatMenu
+  // ChatMenu
 };

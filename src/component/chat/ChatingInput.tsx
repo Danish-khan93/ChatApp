@@ -1,34 +1,60 @@
 import { Box, IconButton, TextField } from "@mui/material";
-import { ChangeEvent, FC, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { ChangeEvent, FC, useState, useId } from "react";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import SendIcon from "@mui/icons-material/Send";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { useSelector } from "react-redux";
+// import { v4 as uuid } from "uuid";
 import { RootState } from "../../redux/store";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc, Timestamp } from "firebase/firestore";
 import { db, storage } from "../../firebase";
-import { ref, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 const ChatingInput: FC = () => {
   const [text, setText] = useState<string>("");
   const [file, setFlie] = useState<null | any>(null);
-
+  const uuid = useId();
   const userID = useSelector((state: RootState) => state?.chat?.chatId);
   const currentUser = useSelector((state: RootState) => state?.auth?.user);
 
   const handleSend = async () => {
     console.log("send message");
     if (file) {
-      const storageRef = ref(storage, uuidv4);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const storageRef = ref(storage, uuid);
+      const uploadTask = uploadBytesResumable(storageRef, file).then(() => {
+        // @ts-ignore
+        uploadTask.on(
+          // @ts-ignore
+          (error) => {
+            console.log(error);
+          },
+          () => {
+            // @ts-ignore
+            getDownloadURL(uploadTask.snapshot.ref).then(
+              async (downloadURL) => {
+                // @ts-ignore
+                await updateDoc(doc(db, "chats", userID), {
+                  messages: arrayUnion({
+                    id: uuid,
+                    text,
+                    senderId: currentUser?.uid,
+                    date: Timestamp.now(),
+                    img: downloadURL,
+                  }),
+                });
+              }
+            );
+          }
+        );
+      });
     } else {
+      // @ts-ignore
       await updateDoc(doc(db, "chats", userID), {
         messages: arrayUnion({
-          id: uuidv4,
+          id: uuid,
           text,
           senderId: currentUser?.uid,
-          date: Date.now(),
+          date: Timestamp.now(),
         }),
       });
     }

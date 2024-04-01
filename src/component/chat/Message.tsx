@@ -8,6 +8,7 @@ type Prop ={
 const Message : FC<Prop> = ({message}) => {
   console.log(message);
   const currentUser = useSelector((state:RootState)=> state.auth.user)
+  const data = useSelector((state:RootState)=> state.chat.user)
 
 
   return (
@@ -16,12 +17,17 @@ const Message : FC<Prop> = ({message}) => {
         <Typography
           className="rounded-full w-[50px] h-[50px]"
           component={"img"}
-          src="https://picsum.photos/50/50"
+          src={
+            message.senderId === currentUser.uid
+              ? currentUser?.photoURL
+              : data?.photoURL
+          }
         ></Typography>
       </Box>
       <Box className="bg-[#1b1b] p-[15px] rounded-r-[20px] rounded-b-[20px]">
         <Typography>
-          {message}
+          {message.text}
+          {/* {message.img && <img src={message.img} alt="" />} */}
         </Typography>
       </Box>
     </Box>

@@ -25,10 +25,10 @@ return ()=>{
   return (
     <Box style={{ height: "calc(100vh - 170px)", overflowY: "auto" }}>
       {
-        message.map((value)=>{
+        message.map((value,index)=>{
           return (
             
-            <Message  message={value} key={value.id}/>
+            <Message  message={value} key={index}/>
           )
         })
       }
