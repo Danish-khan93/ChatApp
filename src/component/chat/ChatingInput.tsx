@@ -65,7 +65,7 @@ const ChatingInput: FC = () => {
       [userID +".date"]: serverTimestamp()
       
     })
-   
+  // @ts-ignore
     await updateDoc(doc(db,"userChats",userID),{
       [userID +".lastMessage"]:{
         text

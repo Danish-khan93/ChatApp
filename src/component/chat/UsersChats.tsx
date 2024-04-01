@@ -54,7 +54,7 @@ const UsersChats: FC = () => {
             </Box>
             <Box>
               <Typography>{value[1]?.userInfo?.displayName}</Typography>
-              {/* <Typography>{value[1]?.userInfo?.lastMessage?.text}</Typography> */}
+              <Typography>{value[1]?.text}</Typography>
             </Box>
           </button>
         );
