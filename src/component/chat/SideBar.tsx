@@ -13,7 +13,7 @@ const SideBar: FC = () => {
       <Box>
         <UserSearch />
       </Box>
-      <Box className="overflow-y-auto">
+      <Box className="overflow-y-auto my-4">
         <UsersChats/>
       </Box>
     </Box>

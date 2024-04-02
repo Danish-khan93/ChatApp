@@ -24,18 +24,17 @@ const ChatingInput: FC = () => {
   const currentUser = useSelector((state: RootState) => state?.auth?.user);
 
   const handleSend = async () => {
-  
-    if (file) {
-      const storageRef = ref(storage, uuid);
-      const uploadTask = uploadBytesResumable(storageRef, file).then(() => {
-        // @ts-ignore
+    try {
+      if (file) {
+        const storageRef = ref(storage, uuid);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
         uploadTask.on(
           // @ts-ignore
           (error) => {
             console.log(error);
           },
           () => {
-            // @ts-ignore
             getDownloadURL(uploadTask.snapshot.ref).then(
               async (downloadURL) => {
                 // @ts-ignore
@@ -52,33 +51,36 @@ const ChatingInput: FC = () => {
             );
           }
         );
-      });
-    } else {
-      // @ts-ignore
-      await updateDoc(doc(db, "chats", userID), {
-        messages: arrayUnion({
-          id: uuid,
+      } else {
+        // @ts-ignore
+        await updateDoc(doc(db, "chats", userID), {
+          messages: arrayUnion({
+            id: uuid,
+            text,
+            senderId: currentUser?.uid,
+            date: Timestamp.now(),
+          }),
+        });
+      }
+      await updateDoc(doc(db, "userChat", currentUser.uid), {
+        [userID + ".lastMessage"]: {
           text,
-          senderId: currentUser?.uid,
-          date: Timestamp.now(),
-        }),
+        },
+        [userID + ".date"]: serverTimestamp(),
       });
+      // @ts-ignore
+      await updateDoc(doc(db, "userChat", userID), {
+        [userID + ".lastMessage"]: {
+          text,
+        },
+        [userID + ".date"]: serverTimestamp(),
+      });
+
+      setText("");
+      setFlie(null);
+    } catch (error) {
+      console.log(error);
     }
-    await updateDoc(doc(db, "userChat", currentUser.uid), {
-      [userID + ".lastMessage"]: {
-        text,
-      },
-      [userID + ".date"]: serverTimestamp(),
-    });
-    // @ts-ignore
-    await updateDoc(doc(db, "userChat", userID), {
-      [userID + ".lastMessage"]: {
-        text,
-      },
-      [userID + ".date"]: serverTimestamp(),
-    });
-    setText("");
-    setFlie(null);
   };
 
   return (
@@ -87,8 +89,10 @@ const ChatingInput: FC = () => {
         type="file"
         className="hidden"
         id="file"
-        // @ts-ignore
-        onChange={(e) => setFlie(e?.target?.files[0])}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          // @ts-ignore
+          setFlie(e?.target?.files[0])
+        }
       />
       <label htmlFor="file">
         <AttachFileIcon />
@@ -98,6 +102,7 @@ const ChatingInput: FC = () => {
         size="small"
         className="w-full"
         placeholder="new message"
+        value={text}
         //   onChange={changeHandler}
         sx={{
           "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
