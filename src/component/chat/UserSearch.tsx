@@ -19,7 +19,8 @@ import { RootState } from "../../redux/store";
 
 const UserSearch: FC = () => {
   const [text, setText] = useState("");
-  const [user, setUser] = useState<any>({});
+  const [user, setUser] = useState<any>(null);
+
   const [err, setErr] = useState<boolean>(false);
   const currentUser = useSelector((state: RootState) => state?.auth?.user);
 
@@ -30,7 +31,6 @@ const UserSearch: FC = () => {
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         setUser(doc.data());
-        console.log(doc.id, " => ", doc.data());
       });
     } catch (error) {
       setErr(true);
@@ -46,7 +46,7 @@ const UserSearch: FC = () => {
         : user?.uid + currentUser?.uid;
     try {
       const res = await getDoc(doc(db, "chats", combineId));
-      console.log(res);
+
       if (!res?.exists()) {
         // create chat
         await setDoc(doc(db, "chats", combineId), { messages: [] });

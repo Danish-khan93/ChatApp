@@ -6,7 +6,13 @@ import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { useSelector } from "react-redux";
 // import { v4 as uuid } from "uuid";
 import { RootState } from "../../redux/store";
-import { arrayUnion, doc, updateDoc, Timestamp, serverTimestamp } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  updateDoc,
+  Timestamp,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
@@ -18,7 +24,7 @@ const ChatingInput: FC = () => {
   const currentUser = useSelector((state: RootState) => state?.auth?.user);
 
   const handleSend = async () => {
-    console.log("send message");
+  
     if (file) {
       const storageRef = ref(storage, uuid);
       const uploadTask = uploadBytesResumable(storageRef, file).then(() => {
@@ -58,23 +64,21 @@ const ChatingInput: FC = () => {
         }),
       });
     }
-    await updateDoc(doc(db,"userChats",currentUser.uid),{
-      [userID +".lastMessage"]:{
-        text
+    await updateDoc(doc(db, "userChat", currentUser.uid), {
+      [userID + ".lastMessage"]: {
+        text,
       },
-      [userID +".date"]: serverTimestamp()
-      
-    })
-  // @ts-ignore
-    await updateDoc(doc(db,"userChats",userID),{
-      [userID +".lastMessage"]:{
-        text
+      [userID + ".date"]: serverTimestamp(),
+    });
+    // @ts-ignore
+    await updateDoc(doc(db, "userChat", userID), {
+      [userID + ".lastMessage"]: {
+        text,
       },
-      [userID +".date"]: serverTimestamp()
-      
-    })
-setText("")
-setFlie(null)
+      [userID + ".date"]: serverTimestamp(),
+    });
+    setText("");
+    setFlie(null);
   };
 
   return (

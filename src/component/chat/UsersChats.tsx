@@ -10,14 +10,10 @@ const UsersChats: FC = () => {
   const currentUser = useSelector((state: RootState) => state?.auth?.user);
 
   const [chat, setChat] = useState([]);
-  console.log(chat);
 
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(doc(db, "userChat", currentUser?.uid), (doc) => {
-        // @ts-ignore
-        console.log(doc.data());
-
         // @ts-ignore
         setChat(doc.data());
       });
@@ -31,7 +27,6 @@ const UsersChats: FC = () => {
   }, [currentUser?.uid]);
 
   const handleChat = (data: any) => {
-    console.log("chatbox");
     dispatch(changeUser({ user: data, currentUser: currentUser }));
   };
 
@@ -52,9 +47,11 @@ const UsersChats: FC = () => {
                 src={value[1]?.userInfo?.photoURl}
               ></Typography>
             </Box>
-            <Box>
-              <Typography>{value[1]?.userInfo?.displayName}</Typography>
-              <Typography>{value[1]?.text}</Typography>
+            <Box className="flex flex-col items-start">
+              <Typography className="font-semibold">
+                {value[1]?.userInfo?.displayName}
+              </Typography>
+              <Typography>{value[1]?.lastMessage?.text}</Typography>
             </Box>
           </button>
         );

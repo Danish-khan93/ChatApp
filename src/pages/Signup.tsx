@@ -48,8 +48,6 @@ const Signup: FC = () => {
   }, []);
 
   const onSubmit = async (data: SIGNUPFORM) => {
-    console.log(data);
-
     try {
       // firebase auth
       const response = await createUserWithEmailAndPassword(
@@ -84,8 +82,6 @@ const Signup: FC = () => {
               });
               await setDoc(doc(db, "userChat", response?.user?.uid), {});
               onAuthStateChanged(auth, (user) => {
-                console.log(user);
-
                 dispatch(login(user));
               });
 

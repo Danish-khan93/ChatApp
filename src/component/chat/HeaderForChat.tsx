@@ -6,9 +6,6 @@ import { RootState } from "../../redux/store";
 import { FC } from "react";
 const HeaderForChat: FC = () => {
   const chatUser = useSelector((state: RootState) => state?.chat.user.user);
-console.log("chatUSer",chatUser);
-
-
 
   return (
     <Box className="flex justify-between items-center w-full bg-[#329A93] p-[20px]">
@@ -21,7 +18,9 @@ console.log("chatUSer",chatUser);
           ></Typography>
         </Box>
         <Box>
-          <Typography className="text-[#fff] font-semibold">{chatUser?.displayName}</Typography>
+          <Typography className="text-[#fff] font-semibold">
+            {chatUser?.displayName}
+          </Typography>
         </Box>
       </Box>
       <Box>

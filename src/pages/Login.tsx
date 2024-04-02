@@ -23,11 +23,11 @@ const Login: FC = () => {
       password: "",
     },
   });
-  useEffect(()=>{
-  if(sessionStorage.getItem("token")){
-    navigate("/home");
-  }
-  },[])
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      navigate("/home");
+    }
+  }, []);
   const onSubmit = async (data: SIGNUPFORM) => {
     try {
       const response = await signInWithEmailAndPassword(
@@ -38,12 +38,9 @@ const Login: FC = () => {
       // @ts-ignore
       sessionStorage.setItem("token", response?._tokenResponse?.refreshToken);
       onAuthStateChanged(auth, (user) => {
-        console.log(user);
-        
         dispatch(login(user));
       });
       navigate("/home");
-      console.log(response?.user?.uid);
     } catch (error: any) {
       if (error.code === "auth/invalid-credential")
         toast.error("Please check the Password");

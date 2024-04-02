@@ -2,18 +2,19 @@ import { Box, Typography } from "@mui/material";
 import { FC } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-type Prop ={
-  message: any
-}
-const Message : FC<Prop> = ({message}) => {
-  console.log(message);
-  const currentUser = useSelector((state:RootState)=> state.auth.user)
-  const data = useSelector((state:RootState)=> state.chat.user)
-console.log(data);
-
+type Prop = {
+  message: any;
+};
+const Message: FC<Prop> = ({ message }) => {
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const data = useSelector((state: RootState) => state.chat.user);
 
   return (
-    <Box className={`flex items-center gap-5 p-[20px] ${message.senderId === currentUser.uid ? "flex-row-reverse":""}`}>
+    <Box
+      className={`flex items-center gap-5 p-[20px] ${
+        message.senderId === currentUser.uid ? "flex-row-reverse" : ""
+      }`}
+    >
       <Box>
         <Typography
           className="rounded-full w-[50px] h-[50px]"
